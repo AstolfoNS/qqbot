@@ -20,7 +20,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class JwtAuthorizationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTH_HEADER_START = "Bearer ";
 
@@ -48,6 +48,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
         try {
+            // 通过 token 构建 authentication
             Authentication authentication = authenticationService.buildAuthenticationFor(token);
             // 判断构建出的 authentication 是否为空
             if (authentication != null) {
@@ -67,8 +68,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Nullable
     private String extractToken(HttpServletRequest request) {
+        // 从请求头中获取 Authorization 中的 token
         String authHeader = request.getHeader("Authorization");
-
+        // 去除 Bearer
         if (authHeader != null && authHeader.startsWith(AUTH_HEADER_START)) {
             return authHeader.substring(AUTH_HEADER_START.length());
         }
