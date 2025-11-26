@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.timeleafing.qqbot.mapper.RoleMapper">
+
+
+    <select id="getRolesByUserId" resultType="com.timeleafing.qqbot.domain.entity.RoleEntity">
+        SELECT DISTINCT
+            r.id,
+            r.code,
+            r.name,
+            r.description,
+            r.level,
+            r.status,
+            r.is_deleted,
+            r.version,
+            r.create_time,
+            r.update_time,
+            r.create_by,
+            r.update_by
+        FROM role r
+            INNER JOIN user_roles ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId}
+          AND r.is_deleted = 0
+          AND r.status = 1
+          AND ur.is_deleted = 0
+          AND ur.status = 1
+        ORDER BY r.id
+    </select>
+</mapper>
