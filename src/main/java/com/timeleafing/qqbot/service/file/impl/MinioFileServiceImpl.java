@@ -3,6 +3,8 @@ package com.timeleafing.qqbot.service.file.impl;
 import com.timeleafing.qqbot.common.util.FileUtils;
 import com.timeleafing.qqbot.common.util.MinioUtils;
 import com.timeleafing.qqbot.exception.BusinessException;
+import com.timeleafing.qqbot.exception.MultipartFileContentTypeException;
+import com.timeleafing.qqbot.exception.MultipartFileHandleException;
 import com.timeleafing.qqbot.service.file.MinioFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,29 +32,28 @@ public class MinioFileServiceImpl implements MinioFileService {
         if (!StringUtils.hasText(bucketName)) {
             throw new IllegalArgumentException("minio 存储桶不能为空");
         }
+        // 从文件中获取 contentType
+        String contentType = file.getContentType();
+        // 如果用户提供了 allowedContentTypes 集合，则执行类型校验
+        if (allowedContentTypes != null && !allowedContentTypes.isEmpty()) {
+            if(!FileUtils.checkContentType(contentType, allowedContentTypes)) {
+                throw new MultipartFileContentTypeException("上传的文件类型不匹配");
+            }
+        }
+        // 从文件中获取 originalFilename
         String originalFilename = file.getOriginalFilename();
         // 判断 originalFilename 是否为空
         if (originalFilename == null) {
             throw new IllegalArgumentException("文件名不能为空");
         }
-        // 文件类型检查
-        String contentType = file.getContentType();
-        // 判断 contentType 是否为空
-        if (!StringUtils.hasText(contentType)) {
-            throw new IllegalArgumentException("无法识别文件类型");
-        }
-        // 如果用户提供了 allowedContentTypes 集合，则执行类型校验
-        if (allowedContentTypes != null && !allowedContentTypes.isEmpty()) {
-            if (!allowedContentTypes.contains(contentType)) {
-                throw new BusinessException("不支持的文件类型: %s".formatted(contentType));
-            }
-        }
-        String objectName = FileUtils.generateFileName(originalFilename);
+        // 定制 objectName
+        String objectName = FileUtils.generateFileObjectName(originalFilename);
 
         try (InputStream inputStream = file.getInputStream()) {
-            minioUtils.bucket(bucketName).uploadFile(objectName, inputStream, file.getSize(), file.getContentType());
-        } catch (IOException e) {
-            throw new BusinessException("文件上传失败，请稍后重试");
+            // 上传文件到 minio
+            minioUtils.bucket(bucketName).uploadFile(objectName, inputStream, file.getSize(), contentType);
+        } catch (Exception e) {
+            throw new MultipartFileHandleException("文件上传失败，请稍后重试");
         }
         return minioUtils.bucket(bucketName).getPublicFileUrl(objectName);
     }
@@ -68,9 +69,10 @@ public class MinioFileServiceImpl implements MinioFileService {
             throw new IllegalArgumentException("minio 存储桶不能为空");
         }
         try {
+            // 从 minio 中删除文件
             minioUtils.bucket(bucketName).deleteFile(minioUtils.extractObjectName(fileUrl, bucketName));
         } catch (Exception e) {
-            throw new BusinessException("文件删除失败，请稍后重试");
+            throw new MultipartFileHandleException("文件删除失败，请稍后重试");
         }
     }
 

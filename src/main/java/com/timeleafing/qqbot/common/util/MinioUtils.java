@@ -87,7 +87,7 @@ public class MinioUtils {
 
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new RuntimeException("下载文件失败，HTTP状态码: " + response.code());
+                throw new RuntimeException("下载文件失败，HTTP状态码: %s".formatted(response.code()));
             }
             ResponseBody body = response.body();
 
