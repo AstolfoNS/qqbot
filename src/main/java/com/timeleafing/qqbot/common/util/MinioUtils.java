@@ -28,7 +28,7 @@ public class MinioUtils {
 
     private final MinioClient minioClient;
 
-    private final MinioProperties minioProperties;
+    private final MinioProperties props;
 
     private final Map<String, MinioBucket> bucketCache = new ConcurrentHashMap<>();
 
@@ -71,7 +71,7 @@ public class MinioUtils {
 
         return bucketCache.computeIfAbsent(
                 bucketName,
-                name -> new MinioBucket(name, minioProperties.getPresignedUrlExpiry(), minioProperties.getPartSize())
+                name -> new MinioBucket(name, props.getPresignedUrlExpiry(), props.getPartSize())
         );
     }
 
@@ -79,7 +79,11 @@ public class MinioUtils {
         validateBucketName(bucketName);
 
         return execute(
-                () -> minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build()),
+                () -> minioClient.bucketExists(
+                        BucketExistsArgs.builder()
+                                .bucket(bucketName)
+                                .build()
+                ),
                 "检查桶是否存在失败: %s".formatted(bucketName)
         );
     }
@@ -89,7 +93,7 @@ public class MinioUtils {
             throw new IllegalArgumentException("fileUrl 或 bucketName 不能为空");
         }
         try {
-            String prefixWithGateway = "%s/%s/".formatted(minioProperties.getPublicBaseUrl(), bucketName);
+            String prefixWithGateway = "%s/%s/".formatted(props.getPublicBaseUrl(), bucketName);
             if (!fileUrl.startsWith(prefixWithGateway)) {
                 throw new MinioFileUrlExtractException("fileUrl 不符合预期格式: %s".formatted(fileUrl));
             }
@@ -149,11 +153,9 @@ public class MinioUtils {
             }
             execute(() -> {
                 minioClient.putObject(
-                        PutObjectArgs
-                                .builder()
+                        PutObjectArgs.builder()
                                 .bucket(bucketName)
-                                .object(objectName)
-                                .stream(inputStream, size, partSize)
+                                .object(objectName).stream(inputStream, size, partSize)
                                 .contentType(StringUtils.hasText(contentType) ? contentType : "application/octet-stream")
                                 .build()
                 );
@@ -258,7 +260,12 @@ public class MinioUtils {
             validateObjectName(objectName);
 
             execute(() -> {
-                minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(objectName).build());
+                minioClient.removeObject(
+                        RemoveObjectArgs.builder()
+                                .bucket(bucketName)
+                                .object(objectName)
+                                .build()
+                );
 
                 return null;
             }, "删除文件失败: %s".formatted(objectName));
@@ -268,7 +275,12 @@ public class MinioUtils {
             validateObjectName(objectName);
 
             return execute(() -> {
-                minioClient.statObject(StatObjectArgs.builder().bucket(bucketName).object(objectName).build());
+                minioClient.statObject(
+                        StatObjectArgs.builder()
+                                .bucket(bucketName)
+                                .object(objectName)
+                                .build()
+                );
 
                 return true;
             }, "对象不存在或检查失败: %s".formatted(objectName));
@@ -283,11 +295,15 @@ public class MinioUtils {
 
             execute(() -> {
                 minioClient.copyObject(
-                        CopyObjectArgs
-                                .builder()
+                        CopyObjectArgs.builder()
                                 .bucket(bucketName)
                                 .object(targetObjectName)
-                                .source(CopySource.builder().bucket(bucketName).object(sourceObjectName).build())
+                                .source(
+                                        CopySource.builder()
+                                                .bucket(bucketName)
+                                                .object(sourceObjectName)
+                                                .build()
+                                )
                                 .build()
                 );
                 return null;
@@ -303,8 +319,7 @@ public class MinioUtils {
         public List<String> listObjects(String prefix) {
             return execute(() -> {
                 Iterable<Result<Item>> results = minioClient.listObjects(
-                        ListObjectsArgs
-                                .builder()
+                        ListObjectsArgs.builder()
                                 .bucket(bucketName)
                                 .prefix(prefix)
                                 .build()
@@ -324,7 +339,7 @@ public class MinioUtils {
         public String getPublicFileUrl(String objectName) {
             validateObjectName(objectName);
 
-            return "%s/%s/%s".formatted(minioProperties.getPublicBaseUrl(), bucketName, FileUtils.encodeFilePath(objectName));
+            return "%s/%s/%s".formatted(props.getPublicBaseUrl(), bucketName, FileUtils.encodeFilePath(objectName));
         }
 
         public String getPresignedGetUrl(String objectName) {
@@ -339,8 +354,7 @@ public class MinioUtils {
             validateObjectName(objectName);
 
             return execute(() -> minioClient.getPresignedObjectUrl(
-                    GetPresignedObjectUrlArgs
-                            .builder()
+                    GetPresignedObjectUrlArgs.builder()
                             .bucket(bucketName)
                             .object(objectName)
                             .method(method)

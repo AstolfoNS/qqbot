@@ -6,24 +6,27 @@
     <select id="getRolesByUserId" resultType="com.timeleafing.qqbot.model.entity.RoleEntity">
         SELECT DISTINCT
             r.id,
+
             r.code,
             r.name,
             r.description,
             r.level,
+
+            r.created_at,
+            r.updated_at,
+            r.created_by,
+            r.updated_by,
+            r.remark,
+
             r.status,
             r.is_deleted,
-            r.version,
-            r.create_time,
-            r.update_time,
-            r.create_by,
-            r.update_by
-        FROM role r
+            r.opt_lock_version
+        FROM roles r
             INNER JOIN user_roles ur ON r.id = ur.role_id
         WHERE ur.user_id = #{userId}
           AND r.is_deleted = 0
           AND r.status = 1
           AND ur.is_deleted = 0
-          AND ur.status = 1
         ORDER BY r.id
     </select>
 </mapper>

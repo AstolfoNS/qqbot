@@ -1,12 +1,11 @@
 package com.timeleafing.qqbot.common.util;
 
-import com.timeleafing.qqbot.common.security.LoginUser;
+import com.timeleafing.qqbot.config.properties.JwtProperties;
+import com.timeleafing.qqbot.security.LoginUser;
 import com.timeleafing.qqbot.exception.JwtGenerateException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,14 +22,7 @@ public class JwtUtils {
 
     private final JwtDecoder jwtDecoder;
 
-    @Value("#{jwtProperties.expire}")
-    private Long expire;
-
-    @Value("#{jwtProperties.issuer}")
-    private String issuer;
-
-    @Value("#{jwtProperties.jwtAlgorithm}")
-    private MacAlgorithm jwtAlgorithm;
+    private final JwtProperties props;
 
 
     public String generateToken(LoginUser loginUser) {
@@ -47,15 +39,14 @@ public class JwtUtils {
     public String generateToken(Long userId) {
         Instant now = Instant.now();
 
-        JwtClaimsSet claims = JwtClaimsSet
-                .builder()
+        JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(userId.toString())
                 .issuedAt(now)
-                .issuer(issuer)
-                .expiresAt(now.plusMillis(expire))
+                .issuer(props.getIssuer())
+                .expiresAt(now.plusMillis(props.getExpire()))
                 .build();
 
-        JwsHeader jwsHeader = JwsHeader.with(jwtAlgorithm).build();
+        JwsHeader jwsHeader = JwsHeader.with(props.getJwtAlgorithm()).build();
 
         try {
             return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();

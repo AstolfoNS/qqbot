@@ -22,10 +22,10 @@ CREATE TABLE IF NOT EXISTS users
     last_login_time         DATETIME            NULL                                                                COMMENT '最后在线时间',
 
     -- 审计字段
-    create_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
-    update_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
-    create_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
-    update_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
+    created_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
+    updated_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
+    created_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
+    updated_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
     remark                  TEXT                NULL                                                                COMMENT '备注',
     -- 状态字段
     status                  TINYINT         NOT NULL    DEFAULT 1                                                   COMMENT '数据状态：0=禁用，1=正常，2=锁定',
@@ -52,10 +52,10 @@ CREATE TABLE IF NOT EXISTS roles
     level                   INT             NOT NULL    DEFAULT 0                                                   COMMENT '角色等级',
 
     -- 审计字段
-    create_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
-    update_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
-    create_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
-    update_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
+    created_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
+    updated_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
+    created_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
+    updated_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
     remark                  TEXT                NULL                                                                COMMENT '备注',
     -- 状态字段
     status                  TINYINT         NOT NULL    DEFAULT 1                                                   COMMENT '数据状态：0=禁用，1=正常，2=锁定',
@@ -78,10 +78,10 @@ CREATE TABLE IF NOT EXISTS user_roles
     role_id                 BIGINT UNSIGNED NOT NULL                                                                COMMENT '角色ID',
 
     -- 审计字段
-    create_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
-    update_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
-    create_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
-    update_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
+    created_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
+    updated_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
+    created_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
+    updated_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
     -- 状态字段
     is_deleted              TINYINT         NOT NULL    DEFAULT 0                                                   COMMENT '逻辑删除：0=未删除，1=已删除',
     -- 唯一性保证
@@ -104,10 +104,10 @@ CREATE TABLE IF NOT EXISTS permissions
     sort_order              INT             NOT NULL    DEFAULT 0                                                   COMMENT '排序顺序',
 
     -- 审计字段
-    create_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
-    update_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
-    create_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
-    update_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
+    created_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
+    updated_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
+    created_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
+    updated_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
     remark                  TEXT                NULL                                                                COMMENT '备注',
     -- 状态字段
     status                  TINYINT         NOT NULL    DEFAULT 1                                                   COMMENT '数据状态：0=禁用，1=正常，2=锁定',
@@ -130,10 +130,10 @@ CREATE TABLE IF NOT EXISTS role_permissions
     permission_id           BIGINT UNSIGNED NOT NULL                                                                COMMENT '权限ID',
 
     -- 审计字段
-    create_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
-    update_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
-    create_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
-    update_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
+    created_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
+    updated_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
+    created_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
+    updated_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
     -- 状态字段
     is_deleted              TINYINT         NOT NULL    DEFAULT 0                                                   COMMENT '逻辑删除：0=未删除，1=已删除',
     -- 唯一性保证
@@ -154,10 +154,10 @@ CREATE TABLE IF NOT EXISTS minecraft_log_levels
     description             VARCHAR(512)        NULL                                                                COMMENT '权限级别描述',
 
     -- 审计字段
-    create_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
-    update_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
-    create_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
-    update_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
+    created_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
+    updated_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
+    created_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
+    updated_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
     remark                  TEXT                NULL                                                                COMMENT '备注',
     -- 状态字段
     status                  TINYINT         NOT NULL    DEFAULT 1                                                   COMMENT '数据状态：0=禁用，1=正常，2=锁定',
@@ -181,10 +181,10 @@ CREATE TABLE IF NOT EXISTS qq_groups
     description             VARCHAR(512)        NULL                                                                COMMENT 'QQ群描述',
 
     -- 审计字段
-    create_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
-    update_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
-    create_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
-    update_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
+    created_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
+    updated_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
+    created_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
+    updated_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
     remark                  TEXT                NULL                                                                COMMENT '备注',
     -- 状态字段
     status                  TINYINT         NOT NULL    DEFAULT 1                                                   COMMENT '数据状态：0=禁用，1=正常，2=锁定',
@@ -207,10 +207,10 @@ CREATE TABLE IF NOT EXISTS qq_group_permissions
     permission_id           BIGINT UNSIGNED NOT NULL                                                                COMMENT '权限ID',
 
     -- 审计字段
-    create_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
-    update_time             DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
-    create_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
-    update_by               BIGINT          NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
+    created_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP                                   COMMENT '创建时间',
+    updated_at              DATETIME        NOT NULL    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       COMMENT '更新时间',
+    created_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '创建者ID（0表示系统）',
+    updated_by              BIGINT UNSIGNED NOT NULL    DEFAULT 0                                                   COMMENT '修改者ID（0表示系统）',
     -- 状态字段
     is_deleted              TINYINT         NOT NULL    DEFAULT 0                                                   COMMENT '逻辑删除：0=未删除，1=已删除',
     -- 唯一性保证

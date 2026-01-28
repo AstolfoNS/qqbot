@@ -131,8 +131,7 @@ public class RedisUtils {
         if (CollectionUtils.isEmpty(list)) {
             return 0;
         }
-        List<String> jsonList = list
-                .stream()
+        List<String> jsonList = list.stream()
                 .map(this::toJson)
                 .filter(Objects::nonNull)
                 .toList();
@@ -151,8 +150,7 @@ public class RedisUtils {
         if (jsonList == null) {
             return Collections.emptyList();
         }
-        return jsonList
-                .stream()
+        return jsonList.stream()
                 .map(json -> fromJson(json, clazz))
                 .filter(Objects::nonNull)
                 .toList();
@@ -166,8 +164,7 @@ public class RedisUtils {
         if (CollectionUtils.isEmpty(set)) {
             return 0;
         }
-        String[] jsons = set
-                .stream()
+        String[] jsons = set.stream()
                 .map(this::toJson)
                 .filter(Objects::nonNull)
                 .distinct()
@@ -185,8 +182,7 @@ public class RedisUtils {
         if (jsonSet == null) {
             return Collections.emptySet();
         }
-        return jsonSet
-                .stream()
+        return jsonSet.stream()
                 .map(json -> fromJson(json, clazz))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());

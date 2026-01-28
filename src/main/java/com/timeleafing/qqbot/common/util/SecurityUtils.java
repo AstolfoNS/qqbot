@@ -1,7 +1,7 @@
 package com.timeleafing.qqbot.common.util;
 
-import com.timeleafing.qqbot.common.security.AuthenticationToken;
-import com.timeleafing.qqbot.common.security.LoginUser;
+import com.timeleafing.qqbot.security.AuthenticationToken;
+import com.timeleafing.qqbot.security.LoginUser;
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -65,7 +65,7 @@ public final class SecurityUtils {
      * 获取当前用户 QQ ID
      */
     @Nullable
-    public static String getQqId() {
+    public static Long getQqId() {
         return getLoginUser().map(LoginUser::getQqId).orElse(null);
     }
 
@@ -124,8 +124,7 @@ public final class SecurityUtils {
      * 获取权限字符串 Set
      */
     public static Set<String> getAuthoritySet() {
-        return getAuthorities()
-                .stream()
+        return getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
     }
@@ -137,8 +136,7 @@ public final class SecurityUtils {
         if (roleCode == null) {
             return false;
         }
-        return getAuthorities()
-                .stream()
+        return getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch((roleCode.startsWith("ROLE_") ? roleCode : "ROLE_" + roleCode)::equals);
     }
@@ -150,8 +148,7 @@ public final class SecurityUtils {
         if (permissionCode == null) {
             return false;
         }
-        return getAuthorities()
-                .stream()
+        return getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(permissionCode::equals);
     }

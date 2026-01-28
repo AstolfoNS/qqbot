@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Data
-@TableName("minecraft_log_level")
+@TableName("minecraft_log_levels")
 public class MinecraftLogLevelEntity extends BaseEntity {
 
     private String code;
@@ -17,7 +17,5 @@ public class MinecraftLogLevelEntity extends BaseEntity {
     private String name;
 
     private String description;
-
-    private Boolean isEnabled;
 
 }

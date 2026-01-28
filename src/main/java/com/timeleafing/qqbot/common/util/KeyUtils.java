@@ -23,7 +23,9 @@ public final class KeyUtils {
         if (parts == null || parts.length == 0) {
             throw new IllegalArgumentException("Cache key 片段不能为空");
         }
-        String key = Arrays.stream(parts).filter(StringUtils::hasText).map(String::trim).collect(Collectors.joining(DELIMITER));
+        String key = Arrays.stream(parts)
+                .filter(StringUtils::hasText)
+                .map(String::trim).collect(Collectors.joining(DELIMITER));
 
         if (!StringUtils.hasText(key)) {
             throw new IllegalArgumentException("Cache key 不能为空");

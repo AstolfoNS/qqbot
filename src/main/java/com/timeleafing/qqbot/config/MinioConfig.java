@@ -1,29 +1,23 @@
 package com.timeleafing.qqbot.config;
 
+import com.timeleafing.qqbot.config.properties.MinioProperties;
 import io.minio.MinioClient;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class MinioConfig {
 
-    @Value("#{minioProperties.endpoint}")
-    private String endpoint;
-
-    @Value("#{minioProperties.accessKey}")
-    private String accessKey;
-
-    @Value("#{minioProperties.secretKey}")
-    private String secretKey;
+    private final MinioProperties props;
 
 
     @Bean
     public MinioClient minioClient() {
-        return MinioClient
-                .builder()
-                .endpoint(endpoint)
-                .credentials(accessKey, secretKey)
+        return MinioClient.builder()
+                .endpoint(props.getEndpoint())
+                .credentials(props.getAccessKey(), props.getSecretKey())
                 .build();
     }
 

@@ -1,11 +1,11 @@
 package com.timeleafing.qqbot.handler;
 
-import com.timeleafing.qqbot.service.minecraft.MinecraftServerService;
+import com.timeleafing.qqbot.config.properties.MinecraftProperties;
+import com.timeleafing.qqbot.domain.minecraft.MinecraftServerService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -25,8 +25,7 @@ import java.util.regex.Pattern;
 @Component
 public class MinecraftLogHandler {
 
-    @Value("#{minecraftProperties.wsUri}")
-    private String minecraftWsUri;
+    private final MinecraftProperties mcProps;
 
     private final MinecraftServerService minecraftServerService;
 
@@ -101,7 +100,7 @@ public class MinecraftLogHandler {
                 }
                 log.debug("Queue full, dropped oldest log. New log inserted: {}", logObj);
             }
-        }, minecraftWsUri);
+        }, mcProps.getWsUri());
     }
 
     @PostConstruct
@@ -166,7 +165,7 @@ public class MinecraftLogHandler {
 
     private void sendToQQ(MinecraftLog logObj) {
         try {
-            minecraftServerService.sendBotMessage("[%s] %s".formatted(logObj.level, logObj.msg));
+            minecraftServerService.sendBotMsgToGroup("[%s] %s".formatted(logObj.level, logObj.msg));
         } catch (Exception e) {
             log.error("Failed to send QQ bot message", e);
         }

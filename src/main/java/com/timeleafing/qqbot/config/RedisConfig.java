@@ -33,14 +33,13 @@ public class RedisConfig {
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
-        return RedisCacheManager
-                .builder(factory)
+        return RedisCacheManager.builder(factory)
                 .cacheDefaults(
-                        RedisCacheConfiguration
-                                .defaultCacheConfig()
+                        RedisCacheConfiguration.defaultCacheConfig()
                                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                                .entryTtl(Duration.ofHours(DEFAULT_CACHE_TTL_HOURS)))
+                                .entryTtl(Duration.ofHours(DEFAULT_CACHE_TTL_HOURS))
+                )
                 .build();
     }
 }

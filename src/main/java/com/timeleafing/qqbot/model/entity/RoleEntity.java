@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Data
-@TableName("role")
+@TableName("roles")
 public class RoleEntity extends BaseEntity {
 
     private String code;

@@ -39,8 +39,7 @@ public final class FileUtils {
     }
 
     public static String encodeFilePath(String path) {
-        return Arrays
-                .stream(path.split("/"))
+        return Arrays.stream(path.split("/"))
                 .map(p -> URLEncoder.encode(p, StandardCharsets.UTF_8).replace("+", "%20"))
                 .collect(Collectors.joining("/"));
     }

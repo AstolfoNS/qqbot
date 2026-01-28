@@ -1,7 +1,8 @@
 package com.timeleafing.qqbot.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import org.springframework.beans.factory.annotation.Value;
+import com.timeleafing.qqbot.config.properties.JwtProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -13,18 +14,15 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
+@RequiredArgsConstructor
 public class JwtConfig {
 
-    @Value("#{jwtProperties.key}")
-    private String key;
-
-    @Value("#{jwtProperties.jcaAlgorithm}")
-    private String jcaAlgorithm;
+    private final JwtProperties props;
 
 
     @Bean
     public SecretKeySpec secretKeySpec() {
-        return new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), jcaAlgorithm);
+        return new SecretKeySpec(props.getKey().getBytes(StandardCharsets.UTF_8), props.getJcaAlgorithm());
     }
 
     @Bean

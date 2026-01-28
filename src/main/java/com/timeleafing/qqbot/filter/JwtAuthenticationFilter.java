@@ -1,7 +1,7 @@
 package com.timeleafing.qqbot.filter;
 
 import com.timeleafing.qqbot.common.constant.HttpStatusConst;
-import com.timeleafing.qqbot.service.system.AuthenticationService;
+import com.timeleafing.qqbot.domain.auth.AuthenticationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
