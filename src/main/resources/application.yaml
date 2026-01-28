@@ -83,7 +83,7 @@ shiro:
 qqbot:
   qq-bot-id: 3805912450
 minecraft:
-  ws-uri: ws://202.189.13.220:23159/ws/log
-  http-uri: http://202.189.13.220:23159
+  ws-uri: ws://111.170.33.8:30123/ws/log
+  http-uri: http://202.189.13.220:30123
   qq-group-id-list:
     - 199986555

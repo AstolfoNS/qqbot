@@ -6,13 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Data
 @ConfigurationProperties(prefix = "okhttp")
-@Component
 public class OkHttpProperties {
 
-    private Integer connectTimeout;
+    private int connectTimeout;
 
-    private Integer readTimeout;
+    private int readTimeout;
 
-    private Integer writeTimeout;
+    private int writeTimeout;
 
 }

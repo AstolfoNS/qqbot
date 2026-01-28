@@ -17,7 +17,7 @@ public class UserEntity extends BaseEntity {
 
     private String qqEmail;
 
-    private String qqId;
+    private Long qqId;
 
     private String username;
 
