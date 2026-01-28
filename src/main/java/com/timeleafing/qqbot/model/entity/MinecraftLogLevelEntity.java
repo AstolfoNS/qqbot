@@ -1,7 +1,7 @@
-package com.timeleafing.qqbot.domain.entity;
+package com.timeleafing.qqbot.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.timeleafing.qqbot.domain.entity.base.BaseEntity;
+import com.timeleafing.qqbot.model.entity.base.BaseEntity;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -9,8 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Data
-@TableName("role")
-public class RoleEntity extends BaseEntity {
+@TableName("minecraft_log_level")
+public class MinecraftLogLevelEntity extends BaseEntity {
 
     private String code;
 
@@ -18,6 +18,6 @@ public class RoleEntity extends BaseEntity {
 
     private String description;
 
-    private Integer level;
+    private Boolean isEnabled;
 
 }

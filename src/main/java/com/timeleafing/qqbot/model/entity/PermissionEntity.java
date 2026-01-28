@@ -1,8 +1,8 @@
-package com.timeleafing.qqbot.domain.entity;
+package com.timeleafing.qqbot.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.timeleafing.qqbot.domain.enumeration.PermType;
-import com.timeleafing.qqbot.domain.entity.base.BaseEntity;
+import com.timeleafing.qqbot.common.enumeration.PermType;
+import com.timeleafing.qqbot.model.entity.base.BaseEntity;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)

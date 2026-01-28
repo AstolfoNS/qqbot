@@ -3,7 +3,7 @@
 <mapper namespace="com.timeleafing.qqbot.mapper.RoleMapper">
 
 
-    <select id="getRolesByUserId" resultType="com.timeleafing.qqbot.domain.entity.RoleEntity">
+    <select id="getRolesByUserId" resultType="com.timeleafing.qqbot.model.entity.RoleEntity">
         SELECT DISTINCT
             r.id,
             r.code,

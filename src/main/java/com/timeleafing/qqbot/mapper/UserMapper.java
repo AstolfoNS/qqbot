@@ -1,7 +1,7 @@
 package com.timeleafing.qqbot.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.timeleafing.qqbot.domain.entity.UserEntity;
+import com.timeleafing.qqbot.model.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

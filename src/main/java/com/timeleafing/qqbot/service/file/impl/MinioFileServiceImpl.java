@@ -2,7 +2,6 @@ package com.timeleafing.qqbot.service.file.impl;
 
 import com.timeleafing.qqbot.common.util.FileUtils;
 import com.timeleafing.qqbot.common.util.MinioUtils;
-import com.timeleafing.qqbot.exception.BusinessException;
 import com.timeleafing.qqbot.exception.MultipartFileContentTypeException;
 import com.timeleafing.qqbot.exception.MultipartFileHandleException;
 import com.timeleafing.qqbot.service.file.MinioFileService;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
@@ -74,19 +72,6 @@ public class MinioFileServiceImpl implements MinioFileService {
         } catch (Exception e) {
             throw new MultipartFileHandleException("文件删除失败，请稍后重试");
         }
-    }
-
-    @Override
-    public MultipartFile downloadFileFromMinio(String fileUrl, String fileName) {
-        // fileUrl 参数校验
-        if (!StringUtils.hasText(fileUrl)) {
-            throw new IllegalArgumentException("文件 url 无效");
-        }
-        // fileName 参数校验
-        if (!StringUtils.hasText(fileName)) {
-            throw new IllegalArgumentException("文件名称不能为空");
-        }
-        return minioUtils.downloadFileAsMultipart(fileUrl, fileName);
     }
 
 }

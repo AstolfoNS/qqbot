@@ -1,4 +1,4 @@
-package com.timeleafing.qqbot.domain.enumeration;
+package com.timeleafing.qqbot.common.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

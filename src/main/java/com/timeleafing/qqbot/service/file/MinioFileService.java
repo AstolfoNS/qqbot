@@ -10,6 +10,4 @@ public interface MinioFileService {
 
     void deletePublicFileFromMinio(String fileUrl, String bucketName);
 
-    MultipartFile downloadFileFromMinio(String fileUrl, String fileName);
-
 }

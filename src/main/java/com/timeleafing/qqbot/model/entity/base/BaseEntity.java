@@ -1,7 +1,7 @@
-package com.timeleafing.qqbot.domain.entity.base;
+package com.timeleafing.qqbot.model.entity.base;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.timeleafing.qqbot.domain.enumeration.Status;
+import com.timeleafing.qqbot.common.enumeration.Status;
 import lombok.Data;
 
 import java.io.Serial;

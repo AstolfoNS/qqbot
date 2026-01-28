@@ -1,6 +1,6 @@
 package com.timeleafing.qqbot.common.response;
 
-import com.timeleafing.qqbot.domain.enumeration.HttpCode;
+import com.timeleafing.qqbot.common.enumeration.HttpCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

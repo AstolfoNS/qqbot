@@ -2,7 +2,7 @@ package com.timeleafing.qqbot.service.system.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.timeleafing.qqbot.mapper.RoleMapper;
-import com.timeleafing.qqbot.domain.entity.RoleEntity;
+import com.timeleafing.qqbot.model.entity.RoleEntity;
 import com.timeleafing.qqbot.service.system.RoleService;
 import org.springframework.stereotype.Service;
 

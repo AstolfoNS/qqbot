@@ -1,8 +1,8 @@
 package com.timeleafing.qqbot.common.security;
 
-import com.timeleafing.qqbot.domain.entity.PermissionEntity;
-import com.timeleafing.qqbot.domain.entity.RoleEntity;
-import com.timeleafing.qqbot.domain.entity.UserEntity;
+import com.timeleafing.qqbot.model.entity.PermissionEntity;
+import com.timeleafing.qqbot.model.entity.RoleEntity;
+import com.timeleafing.qqbot.model.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

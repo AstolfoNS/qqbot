@@ -1,4 +1,4 @@
-package com.timeleafing.qqbot.domain.enumeration;
+package com.timeleafing.qqbot.common.enumeration;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
@@ -10,21 +10,21 @@ import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Getter
-public enum PermType {
+public enum Gender {
 
-    API(1),
-    WEB(2),
-    BOT(3);
+    UNKNOWN(0),
+    MALE(1),
+    FEMALE(2);
 
     @EnumValue
     private final int code;
 
-    private static final Map<Integer, PermType> CODE_MAP = Stream
+    private static final Map<Integer, Gender> CODE_MAP = Stream
             .of(values())
-            .collect(Collectors.toMap(PermType::getCode, e -> e));
+            .collect(Collectors.toMap(Gender::getCode, e -> e));
 
 
-    public static PermType fromCode(int code) {
+    public static Gender fromCode(int code) {
         return CODE_MAP.getOrDefault(code, null);
     }
 
