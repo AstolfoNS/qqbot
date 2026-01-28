@@ -55,8 +55,7 @@ public class HmacAuthInterceptor implements Interceptor {
 
         String sign = hmacBase64(secret, canonical);
 
-        Request signed = req
-                .newBuilder()
+        Request signed = req.newBuilder()
                 .header(props.getHeaderTs(), ts)
                 .header(props.getHeaderNonce(), nonce)
                 .header(props.getHeaderSign(), sign)
