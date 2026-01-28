@@ -6,6 +6,7 @@ import com.mikuac.shiro.dto.event.message.AnyMessageEvent;
 import com.timeleafing.qqbot.config.properties.MinecraftProperties;
 import com.timeleafing.qqbot.config.properties.QqBotProperties;
 import com.timeleafing.qqbot.domain.minecraft.MinecraftServerService;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -66,13 +66,17 @@ public class MinecraftServerServiceImpl implements MinecraftServerService {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String body = response.body() != null ? response.body().string() : "";
-                if (!response.isSuccessful()) {
-                    log.error("Minecraft command failed: HTTP {}, body={}", response.code(), body);
-                    return;
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                try (ResponseBody requestBody = response.body()) {
+                    String body = requestBody.string();
+                    if (!response.isSuccessful()) {
+                        log.error("Minecraft cmd failed: HTTP {}, body={}", response.code(), body);
+                        return;
+                    }
+                    log.info("Minecraft cmd ok: {}", body);
+                } catch (Exception e) {
+                    log.error("Read response failed", e);
                 }
-                log.info("Minecraft cmd ok: {}", body);
             }
         });
     }
@@ -97,13 +101,17 @@ public class MinecraftServerServiceImpl implements MinecraftServerService {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String respBody = response.body() != null ? response.body().string() : "";
-                if (!response.isSuccessful()) {
-                    log.error("Minecraft server start failed: HTTP {}, body={}", response.code(), respBody);
-                    return;
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                try (ResponseBody requestBody = response.body()) {
+                    String respBody = requestBody.string();
+                    if (!response.isSuccessful()) {
+                        log.error("Minecraft server start failed: HTTP {}, body={}", response.code(), respBody);
+                        return;
+                    }
+                    bot.sendMsg(event, respBody, false);
+                } catch (Exception e) {
+                    log.error("Read response failed", e);
                 }
-                CompletableFuture.runAsync(() -> bot.sendMsg(event, respBody, false));
             }
         });
     }
@@ -128,13 +136,17 @@ public class MinecraftServerServiceImpl implements MinecraftServerService {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String respBody = response.body() != null ? response.body().string() : "";
-                if (!response.isSuccessful()) {
-                    log.error("Minecraft server stop failed: HTTP {}, body={}", response.code(), respBody);
-                    return;
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                try (ResponseBody requestBody = response.body()) {
+                    String respBody = requestBody.string();
+                    if (!response.isSuccessful()) {
+                        log.error("Minecraft server stop failed: HTTP {}, body={}", response.code(), respBody);
+                        return;
+                    }
+                    bot.sendMsg(event, respBody, false);
+                } catch (Exception e) {
+                    log.error("Read response failed", e);
                 }
-                CompletableFuture.runAsync(() -> bot.sendMsg(event, respBody, false));
             }
         });
     }
@@ -146,12 +158,26 @@ public class MinecraftServerServiceImpl implements MinecraftServerService {
             scheduler.schedule(() -> sendBotMsgToGroup(logInfo), 5, TimeUnit.SECONDS);
             return;
         }
-        try {
-            List<Long> qqGroupId = new ArrayList<>();
 
-            qqGroupId.forEach(groupId -> bot.sendGroupMsg(groupId, "[MC] " + logInfo, false));
-        } catch (Exception exception) {
-            log.error("Failed to send message via Bot: {}", exception.getMessage(), exception);
+        List<Long> groupIds = new ArrayList<>();
+        if (groupIds == null || groupIds.isEmpty()) {
+            log.warn("No qq group ids configured, skip sending. log={}", logInfo);
+            return;
         }
+
+        groupIds.forEach(groupId -> {
+            try {
+                bot.sendGroupMsg(groupId, "[MC] " + logInfo, false);
+            } catch (Exception e) {
+                log.error("Failed to send group msg, groupId={}, err={}", groupId, e.getMessage(), e);
+            }
+        });
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        try {
+            scheduler.shutdownNow();
+        } catch (Exception ignored) { }
     }
 }

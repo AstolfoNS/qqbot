@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Data
-@TableName("user")
+@TableName("users")
 public class UserEntity extends BaseEntity {
 
     private String qqEmail;
