@@ -84,11 +84,11 @@ shiro:
 qqbot:
   qq-bot-id: 3805912450
 minecraft:
-  ws-uri: ws://111.170.33.8:30123/api/minecraft/ws/log
-  http-uri: http://111.170.33.8:30123/api/minecraft
+  ws-uri: ws://103.45.143.3:30123/api/minecraft/ws/log
+  http-uri: http://103.45.143.3:30123/api/minecraft
 hmac-security:
   hmac-secret: lIYMNDJ7iejvwPM/QbtIJ6/RMlefR3oU8OzEAt61oVhpyTwy0Wp/ajdZcHZMGG2L
   header-ts: X-TS
   header-nonce: X-NONCE
   header-sign: X-SIGN
-  allowed-hosts: ["111.170.33.8"]
+  allowed-hosts: ["103.45.143.3"]
